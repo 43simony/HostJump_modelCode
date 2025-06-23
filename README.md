@@ -1,7 +1,7 @@
 # HostJump_modelCode
 
 ### About This Project
-All resources necessary to replicate results from "Spillover is not a predictor of host jump risk". The R script `.\src\hostJump_FullModel.R` 
+All resources necessary to replicate results from "Spillover is not a predictor of host jump risk: novelty is". The R script `.\src\hostJump_FullModel.R` provides all necessary functions and code to replicate all model results and figures. Note that it may be necessary to modify the file paths to save figures and run the C++ simulation code in `.src\HJ_simulation.cpp`.
 
 ### Repository Structure
 ```

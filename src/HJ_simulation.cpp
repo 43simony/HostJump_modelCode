@@ -345,7 +345,7 @@ struct Parameters
                 std::string line = "";
                 while(std::getline(parms, line)){
                     
-                    double a, b, weight;
+                    double a, b, norm_weight, weight;
                     std::string tmp = "";
                     std::stringstream iss(line);
                     
@@ -358,6 +358,11 @@ struct Parameters
                     b = std::stod(tmp); // convert string to double
                     b_vec.push_back(b); // add node value to vector
                     tmp = "";
+                    
+                    // necessary update to code for poissonExact.cpp script which reads in the same parameter file, but requires normalized weights instead of cumulative weights for computation. Here these normalized weights are unnecessary but the line must be read to ensure proper values are used. 
+                    std::getline(iss, tmp, ',');
+                    // norm_weight = std::stod(tmp); // convert string to double
+                    // nodes.push_back(norm_weight); // add normalized weight value to vector
                     
                     std::getline(iss, tmp, ',');
                     weight = std::stod(tmp); // convert string to double
