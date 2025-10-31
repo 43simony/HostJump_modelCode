@@ -96,7 +96,6 @@ double draw_beta_mix(std::vector<double> a, std::vector<double> b, std::vector<d
     static gsl_rng* r;
     if(r == nullptr){ r = rng_w.get_r(); }
     
-    
     int idx = 0;
     double val = 0;
     double U1 = draw_uniform_gsl(0.0, 1.0);
@@ -139,26 +138,6 @@ double draw_discrete_gsl(std::vector<double> nodes, std::vector<double> weights)
         exit(EXIT_FAILURE);
     }
     
-    // ensure weights are normalized -- this is now done in the R wrapper function
-    // therefore it is unnecessary to check for normalization every time the function is called
-    /*
-    double weightSum = std::accumulate(weights.begin(), weights.end(), 0);
-    
-    // normalize weights and make the values cumulative
-    double Winv = 1.0 / weightSum; // inverse weight because division is slow
-    if(weightSum != 1.0){
-        weights[0] *= Winv;
-        for(int i = 1; i<weights.size(); ++i){
-            weights[i] *= Winv; // normalize weight
-            weights[i] += weights[i-1]; // make weights vector cumulative
-        }
-    }else{
-        for(int i = 1; i<weights.size(); ++i){
-            weights[i] += weights[i-1]; // make weights vector cumulative
-        }
-    }
-    */
-    
     static Gsl_rng_wrapper rng_w;
     static gsl_rng* r;
     if(r == nullptr){ r = rng_w.get_r(); }
@@ -168,9 +147,7 @@ double draw_discrete_gsl(std::vector<double> nodes, std::vector<double> weights)
     auto it = std::lower_bound(weights.begin(), weights.end(), P1); // returns weight value
     int index = std::distance(weights.begin(), it); // return position of the selected weight
     
-    // return the value of the node with the associated index
-    return nodes[index];
-   
+    return nodes[index]; // return the value of the node with the associated index
 }
 
 
