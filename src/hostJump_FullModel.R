@@ -605,10 +605,10 @@ dat2$prob = exp(-dat2$lambda*dat2$phi*dat2$T_lim)
 
 
 # New facet label names for T
-T.labs <- c("t[P]==0", 
-            "t[P]==5", 
-            "t[P]==20", 
-            "t[P]==100")
+T.labs <- c("T[P]==0", 
+            "T[P]==5", 
+            "T[P]==20", 
+            "T[P]==100")
 
 names(T.labs) = c("0","5","20","100")
 
