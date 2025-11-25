@@ -27,7 +27,7 @@ library(colorspace)
 ####################
 
 ## set working directory to project root folder. In this case './HostJump_model'
-setwd("~/Desktop/Repos/HostJump_Model/") ## ensure this path matches the local path to the project root folder
+setwd("~/Desktop/Repos/HostJump_modelCode/") ## ensure this path matches the local path to the project root folder
 
 #################
 #################
@@ -424,7 +424,7 @@ model_solution_exact <- function(past, future, pars, a=NA, b=NA, weights = c(), 
     
     strvec = format( c( t=1, length(a), pars$lambda*pars$t_p, pars$lambda_f*pars$t_f, a, b, weights), digits = 5)
     
-    setwd("~/Desktop/Repos/HostJump_Model/src") ## call has to be from location of .exe file or parameter read-in fails???
+    setwd("~/Desktop/Repos/HostJump_modelCode/src") ## call has to be from location of .exe file or parameter read-in fails???
     
     ## Run the model
     ## The path to the bTB cpp binary file must be set correctly in the sys call below:
@@ -495,7 +495,7 @@ HJ_simulation <- function(n_reps, parameters, batch_name, output_mode = 1){
   )
   strvec = format(parvec, digits = 5)
   
-  setwd("~/Desktop/Repos/HostJump_Model/src") ## call has to be from location of .exe file or parameter read-in fails???
+  setwd("~/Desktop/Repos/HostJump_modelCode/src") ## call has to be from location of .exe file or parameter read-in fails???
   
   ## Run the model
   ## The path to the bTB cpp binary file must be set correctly in the sys call below:
@@ -605,10 +605,12 @@ dat2$prob = exp(-dat2$lambda*dat2$phi*dat2$T_lim)
 
 
 # New facet label names for T
-T.labs <- c("T[P]==0", 
-            "T[P]==5", 
-            "T[P]==20", 
-            "T[P]==100")
+T.labs <- c(
+  "T[P]==0~'years'",
+  "T[P]==5~'years'",
+  "T[P]==20~'years'",
+  "T[P]==100~'years'"
+)
 
 names(T.labs) = c("0","5","20","100")
 
@@ -641,7 +643,7 @@ p2 <- ggplot() +
   # labs(x = expression( "Spillover rate "*(lambda)), 
   #      y = expression(phi), 
   #      fill = expression("P("*H[P]*"=0)")) + 
-  labs(x = expression( "spillover rate "*(lambda)), 
+  labs(x = expression( "spillover rate "*lambda* " (1/year)"), 
        y = expression("host jump prob.\n per spillover"*(phi)), 
        fill = expression("fraction of remaining\nzoonotic pathogens")) + 
   facet_wrap( ~ T_lim, nrow = 1, labeller = as_labeller(T.labs, default = label_parsed)) +
@@ -649,15 +651,15 @@ p2 <- ggplot() +
   theme_bw() + 
   theme(
     legend.position = "bottom",
-    axis.title.y = element_text( vjust = 0.5, size = 16),
-    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text( vjust = 0.5, size = 20),
+    axis.title.x = element_text(size = 20),
     legend.key.width = unit(1.55, "cm"),
     strip.text = element_text(size = 16),
-    legend.text = element_text(size = 12),
-    legend.title = element_text(vjust = 0.8, size = 12),
+    legend.text = element_text(size = 16),
+    legend.title = element_text(vjust = 0.8, size = 16),
     legend.title.align = 0.1,
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 18),
+    axis.text.y = element_text(size = 18),
     panel.spacing = unit(1, "lines"),
     aspect.ratio = 1.0)
 p2
@@ -826,10 +828,10 @@ y_upr = max(prior$density[!is.infinite(prior$density)])
       panel.border = element_blank(),
       plot.margin = unit(c(0.5,0,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24),
-      axis.text.x = element_text(size = 24),
-      axis.title.y = element_text(size = 24),
-      axis.text.y = element_text(size = 24),
+      axis.title.x = element_text(size = 28),
+      axis.text.x = element_text(size = 28),
+      axis.title.y = element_text(size = 28),
+      axis.text.y = element_text(size = 28),
       aspect.ratio = 1.0
     )
   
@@ -854,9 +856,9 @@ y_upr = max(prior$density[!is.infinite(prior$density)])
       panel.border = element_blank(),
       plot.margin = unit(c(0.5,0,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24),
-      axis.text.x = element_text(size = 24),
-      axis.title.y = element_text(size = 24),
+      axis.title.x = element_text(size = 28),
+      axis.text.x = element_text(size = 28),
+      axis.title.y = element_text(size = 28),
       #axis.text.y = element_text(size = 24),
       axis.text.y = element_blank(),
       aspect.ratio = 1.0
@@ -883,9 +885,9 @@ y_upr = max(prior$density[!is.infinite(prior$density)])
       panel.border = element_blank(),
       plot.margin = unit(c(0.5,0,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24),
-      axis.text.x = element_text(size = 24),
-      axis.title.y = element_text(size = 24),
+      axis.title.x = element_text(size = 28),
+      axis.text.x = element_text(size = 28),
+      axis.title.y = element_text(size = 28),
       #axis.text.y = element_text(size = 24),
       axis.text.y = element_blank(),
       aspect.ratio = 1.0
@@ -945,11 +947,11 @@ savePlots = FALSE ## option to save plots to ./plots in directory. Note that thi
     annotate(
       "text", x = 9, y = 10.2, 
       label = "(lambda*T[P] == c*lambda*T[F])", 
-      parse = TRUE, color = "white", alpha = 0.6, size = 14 / 2.845, angle = 45
+      parse = TRUE, color = "white", alpha = 0.6, size = 18 / 2.845, angle = 45
     ) +
     labs( 
       x = " ",
-      y = expression(atop("Expected number of", paste("future spillovers (", lambda, T[F], ")"))),
+      y = expression(atop("Expected number of", paste("future spillovers (c", lambda, T[F], ")"))),
       fill = expression( paste(P(H[F]>0)) ) 
     ) + 
     coord_cartesian(expand = FALSE) +
@@ -963,14 +965,14 @@ savePlots = FALSE ## option to save plots to ./plots in directory. Note that thi
     theme(panel.grid = element_blank(), panel.border = element_blank(), 
           plot.margin = unit(c(0.5,0,0,0), 'lines'),
           plot.title = element_blank(),
-          axis.title.x = element_text(size = 24),
-          axis.text.x = element_text(size = 24),
-          axis.title.y = element_text(size = 24),
-          axis.text.y = element_text(size = 24),
-          legend.title = element_text(size = 20),
+          axis.title.x = element_text(size = 28),
+          axis.text.x = element_text(size = 28),
+          axis.title.y = element_text(size = 28),
+          axis.text.y = element_text(size = 28),
+          legend.title = element_text(size = 24),
           legend.position = "bottom",
           legend.title.align = 0.5,
-          legend.text = element_text(size = 20),
+          legend.text = element_text(size = 24),
           legend.key.width = unit(1.1, "cm"),
           aspect.ratio = 1.0)
   
@@ -989,7 +991,7 @@ savePlots = FALSE ## option to save plots to ./plots in directory. Note that thi
     annotate(
       "text", x = 9, y = 10.2, 
       label = "(lambda*T[P] == c*lambda*T[F])", 
-      parse = TRUE, color = "white", alpha = 0.6, size = 14 / 2.845, angle = 45
+      parse = TRUE, color = "white", alpha = 0.6, size = 18 / 2.845, angle = 45
     ) + 
     labs( 
       x = expression(paste("Expected number of past spillovers (", lambda, T[P], ")")),
@@ -1006,15 +1008,15 @@ savePlots = FALSE ## option to save plots to ./plots in directory. Note that thi
     theme(panel.grid = element_blank(), panel.border = element_blank(), 
           plot.margin = unit(c(0.5,0,0,0), 'lines'),
           plot.title = element_blank(),
-          axis.title.x = element_text(size = 24),
-          axis.text.x = element_text(size = 24),
+          axis.title.x = element_text(size = 28),
+          axis.text.x = element_text(size = 28),
           axis.title.y = element_blank(),
-          axis.text.y = element_text(size = 24, color = "#FFFFFF"),
+          axis.text.y = element_text(size = 28, color = "#FFFFFF"),
           axis.ticks.y = element_blank(),
-          legend.title = element_text(size = 20),
+          legend.title = element_text(size = 24),
           legend.position = "bottom",
           legend.title.align = 0.5,
-          legend.text = element_text(size = 20),
+          legend.text = element_text(size = 24),
           legend.key.width = unit(1.1, "cm"),
           aspect.ratio = 1.0)
   
@@ -1033,7 +1035,7 @@ savePlots = FALSE ## option to save plots to ./plots in directory. Note that thi
     annotate(
       "text", x = 9, y = 10.2, 
       label = "(lambda*T[P] == c*lambda*T[F])", 
-      parse = TRUE, color = "white", alpha = 0.6, size = 14 / 2.845, angle = 45
+      parse = TRUE, color = "white", alpha = 0.6, size = 18 / 2.845, angle = 45
     ) + 
     labs( 
       fill = expression( paste(P(H[F]>0)) ), 
@@ -1050,15 +1052,15 @@ savePlots = FALSE ## option to save plots to ./plots in directory. Note that thi
     theme(panel.grid = element_blank(), panel.border = element_blank(), 
           plot.margin = unit(c(0.5,0,0,0), 'lines'),
           plot.title = element_blank(),
-          axis.title.x = element_text(size = 24),
-          axis.text.x = element_text(size = 24),
+          axis.title.x = element_text(size = 28),
+          axis.text.x = element_text(size = 28),
           axis.title.y = element_blank(),
-          axis.text.y = element_text(size = 24, color = "#FFFFFF"),
+          axis.text.y = element_text(size = 28, color = "#FFFFFF"),
           axis.ticks.y = element_blank(),
-          legend.title = element_text(size = 20),
+          legend.title = element_text(size = 24),
           legend.position = "bottom",
           legend.title.align = 0.5,
-          legend.text = element_text(size = 20),
+          legend.text = element_text(size = 24),
           legend.key.width = unit(1.2, "cm"),
           aspect.ratio = 1.0)
   
@@ -1151,12 +1153,12 @@ if(pars$runSims){ fname_tagL = paste0(fname_tag, '_Sims') }else{ fname_tagL = pa
   
   L_curve1 <- ggplot() +
     geom_line(data = run_out[cond_l,][run_out[cond_l,]$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.25) +
-    geom_point(data = run_out[cond_long,][run_out[cond_long,]$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
+    #geom_point(data = run_out[cond_long,][run_out[cond_long,]$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
     geom_abline(slope = 0, intercept = 1 - (1/(C+1)^(pars$a)), color = '#C99700', linetype = 'dashed', linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0, long_max, by=long_max) ) +
     scale_y_continuous(breaks = seq(0, y_upr , by = round(y_upr/2, digits = 2)), limits = c(0, y_upr)) +
     labs( 
-      x = expression( paste("spillover rate (", lambda, ")") ),
+      x = expression( paste("Spillover rate (", lambda, ")") ),
       y = expression( paste(P(H[F]>0)) ) 
     ) + 
     theme_classic() +
@@ -1170,34 +1172,34 @@ if(pars$runSims){ fname_tagL = paste0(fname_tag, '_Sims') }else{ fname_tagL = pa
       aspect.ratio = 1.0)
   
   curve1 <- ggplot() +
-    geom_line(data = run_out[cond_short & run_out$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.25) +
-    geom_point(data = run_out[cond_short_P & run_out$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
+    geom_line(data = run_out[cond_short & run_out$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.5) +
+    #geom_point(data = run_out[cond_short_P & run_out$scenario == 'Scenario 1',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
     geom_abline(slope = 0, intercept = 1 - (1/(C+1)^(pars$a)), color = '#C99700', linetype = 'dashed', linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0, max, by = 5)) +
     scale_y_continuous(breaks = seq(0, y_upr , by = round(y_upr/2, digits = 2)), limits = c(0, y_upr)) +     
     labs( 
-      x = expression( paste("spillover rate (", lambda, ")") ),
+      x = expression( paste("Spillover rate (", lambda, ")") ),
       y = expression( atop( "Probability of a host", paste("jump  ", P(H[F]>0)) )) 
     ) + 
     theme_classic() +
     theme(
       plot.margin = unit(c(0.2,1,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24, color = "#FFFFFF"),
-      axis.text.x = element_text(size = 24),
-      axis.title.y = element_text(size = 24),
-      axis.text.y = element_text(size = 24),
+      axis.title.x = element_text(size = 28, color = "#FFFFFF"),
+      axis.text.x = element_text(size = 28),
+      axis.title.y = element_text(size = 28),
+      axis.text.y = element_text(size = 28),
       aspect.ratio = 1.0)
   
   
   L_curve2 <- ggplot() +
     geom_line(data = run_out[cond_l,][run_out[cond_l,]$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.25) +
-    geom_point(data = run_out[cond_long,][run_out[cond_long,]$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
+    #geom_point(data = run_out[cond_long,][run_out[cond_long,]$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
     geom_abline(slope = 0, intercept = 1 - (1/(C+1)^(pars$a)), color = '#C99700', linetype = 'dashed', linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0,long_max,by=long_max) ) +
     scale_y_continuous(breaks = seq(0, y_upr , by = round(y_upr/2, digits = 2)), limits = c(0, y_upr)) +     
     labs( 
-      x = expression( paste("spillover rate (", lambda, ")") ),
+      x = expression( paste("Spillover rate (", lambda, ")") ),
       y = expression( paste(P(H[F]>0)) ) 
     ) + 
     theme_classic() +
@@ -1212,34 +1214,34 @@ if(pars$runSims){ fname_tagL = paste0(fname_tag, '_Sims') }else{ fname_tagL = pa
 
   
   curve2 <- ggplot() +
-    geom_line(data = run_out[cond_short & run_out$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.25) +
-    geom_point(data = run_out[cond_short_P & run_out$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
+    geom_line(data = run_out[cond_short & run_out$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.5) +
+    #geom_point(data = run_out[cond_short_P & run_out$scenario == 'Scenario 2',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
     geom_abline(slope = 0, intercept = 1 - (1/(C+1)^(pars$a)), color = '#C99700', linetype = 'dashed', linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0, max, by = 5)) +
     scale_y_continuous(breaks = seq(0, y_upr , by = round(y_upr/2, digits = 2)), limits = c(0, y_upr)) +     
     labs( 
-      x = expression( paste("Rate of spillover (", lambda, ")") ),
+      x = expression( paste("Spillover rate ", lambda, " (1/year)") ),
       y = " " 
     ) + 
     theme_classic() +
     theme(
       plot.margin = unit(c(0.2,1,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24),
-      axis.text.x = element_text(size = 24),
+      axis.title.x = element_text(size = 28),
+      axis.text.x = element_text(size = 28),
       axis.title.y = element_blank(),
       axis.text.y = element_blank(),
       aspect.ratio = 1.0)
   
   L_curve3 <- ggplot() +
     geom_line(data = run_out[cond_l,][run_out[cond_l,]$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.25) +
-    geom_point(data = run_out[cond_long,][run_out[cond_long,]$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
+    #geom_point(data = run_out[cond_long,][run_out[cond_long,]$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
     geom_abline(slope = 0, intercept = 1 - (1/(C+1)^(pars$a)), color = '#C99700', linetype = 'dashed', linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0,long_max,by=long_max) ) +
     scale_y_continuous(breaks = seq(0, y_upr , by = round(y_upr/2, digits = 2)), limits = c(0, y_upr)) +     
     theme_classic() +
     labs( 
-      x = expression( paste("spillover rate (", lambda, ")") ),
+      x = expression( paste("Spillover rate (", lambda, ")") ),
       y = expression( paste(P(H[F]>0)) ) 
     ) + 
     theme(
@@ -1253,8 +1255,8 @@ if(pars$runSims){ fname_tagL = paste0(fname_tag, '_Sims') }else{ fname_tagL = pa
   
   
   curve3 <- ggplot() +
-    geom_line(data = run_out[cond_short & run_out$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.25) +
-    geom_point(data = run_out[cond_short_P & run_out$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
+    geom_line(data = run_out[cond_short & run_out$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', linewidth = 1.5) +
+    #geom_point(data = run_out[cond_short_P & run_out$scenario == 'Scenario 3',], aes(x = (past_val), y = .data[['sol']]), color = '#0C2340', size = 2.5) +
     geom_abline(slope = 0, intercept = 1 - (1/(C+1)^(pars$a)), color = '#C99700', linetype = 'dashed', linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0, max, by = 5)) +
     scale_y_continuous(breaks = seq(0, y_upr , by = round(y_upr/2, digits = 2)), limits = c(0, y_upr)) +     
@@ -1266,8 +1268,8 @@ if(pars$runSims){ fname_tagL = paste0(fname_tag, '_Sims') }else{ fname_tagL = pa
     theme(
       plot.margin = unit(c(0.2,1,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24, color = "#FFFFFF"),
-      axis.text.x = element_text(size = 24),
+      axis.title.x = element_text(size = 28, color = "#FFFFFF"),
+      axis.text.x = element_text(size = 28),
       axis.title.y = element_blank(),
       axis.text.y = element_blank(),
       aspect.ratio = 1.0)
@@ -1392,7 +1394,7 @@ curves
 LAMBDA = 1
 lambda_vec = c( 5, 10, 100)
 pars = data.frame(past_model = 1, N = 1, lambda = LAMBDA, t_p = 1,
-                  future_model = 1, M = 1, lambda_f = LAMBDA, t_f = 1,
+                  future_model = 1, M = 1, lambda_f = LAMBDA, t_f = 5,
                   redraw = 1, verbose = 0, std_out = 1, runSims = FALSE, reps = 50000,
                   prior_type = 2, a = .1, b = 10, H_crit = 0
 )
@@ -1402,7 +1404,7 @@ step = 0.1 # step size -- must be an integer for N-M models
 C = 1; pars$lambda_f = C*pars$lambda_f; # past:future spillover ratio -- slope of C:1 line
 
 ##vals = data.frame(c(seq(0,20,0.5), seq(20,100,2)[-1]), c(seq(0,20,0.5), seq(20,100,2)[-1]))
-vals = expand.grid(seq(0,max,step), c(5))
+vals = expand.grid(seq(0,max,step), c(pars$t_f))
 names(vals) = c('t_p', 't_f') ## names must be adjusted to match parameter name in "pars" data frame
 
 ####################
@@ -1425,10 +1427,10 @@ if(pars$prior_type == 2 && pars$runSims){
 }
 
 ## Run model with prior 1
-run_out <- fullModel_eval(pars = pars, mixtureDistn = mixtureDistn, vals = vals)
-names(run_out) = c('past_val', 'future_val', 'prob', 'sol', 'exact')
-run_out$scenario = "Scenario 1"
-run_out$lambda = pars$lambda
+run_out_tp <- fullModel_eval(pars = pars, mixtureDistn = mixtureDistn, vals = vals)
+names(run_out_tp) = c('past_val', 'future_val', 'prob', 'sol', 'exact')
+run_out_tp$scenario = "Scenario 1"
+run_out_tp$lambda = pars$lambda
 for(i in 1:length(lambda_vec)){
   pars$lambda = lambda_vec[i]
   pars$lambda_f = C*lambda_vec[i]
@@ -1436,7 +1438,7 @@ for(i in 1:length(lambda_vec)){
   names(tmp2) = c('past_val', 'future_val', 'prob', 'sol', 'exact')
   tmp2$scenario = "Scenario 1"
   tmp2$lambda = pars$lambda
-  run_out <- rbind(run_out, tmp2)
+  run_out_tp <- rbind(run_out_tp, tmp2)
 }
 rm(tmp2)
 pars$lambda = LAMBDA ## reset lambda to initial value
@@ -1476,7 +1478,7 @@ for(i in 1:length(lambda_vec)){
   tmp2$lambda = pars$lambda
   tmp <- rbind(tmp, tmp2)
 }
-run_out <- rbind(run_out, tmp); rm(tmp); rm(tmp2)
+run_out_tp <- rbind(run_out_tp, tmp); rm(tmp); rm(tmp2)
 pars$lambda = LAMBDA ## reset lambda to initial value
 pars$lambda_f = C*LAMBDA ## reset lambda to initial value
 ####################
@@ -1514,13 +1516,13 @@ for(i in 1:length(lambda_vec)){
   tmp2$lambda = pars$lambda
   tmp <- rbind(tmp, tmp2)
 }
-run_out <- rbind(run_out, tmp); rm(tmp); rm(tmp2)
+run_out_tp <- rbind(run_out_tp, tmp); rm(tmp); rm(tmp2)
 pars$lambda = LAMBDA ## reset lambda to initial value
 pars$lambda_f = C*LAMBDA ## reset lambda to initial value
 ####################
 
-sum(abs(run_out$sol-run_out$exact)) ## total error between numerical and exact solution over all scenarios
-max(abs(run_out$sol-run_out$exact)) ## max point of error
+sum(abs(run_out_tp$sol-run_out_tp$exact)) ## total error between numerical and exact solution over all scenarios
+max(abs(run_out_tp$sol-run_out_tp$exact)) ## max point of error
 
 ###############################
 
@@ -1528,15 +1530,15 @@ max(abs(run_out$sol-run_out$exact)) ## max point of error
 ## Generate main ##
 ## results plots ##
 ###################
-brk = seq(from = 0, to = max(max(run_out$exact), max(run_out$prob), max(run_out$sol)), by = 0.05)[-1] # contour value breakpoints
+brk = seq(from = 0, to = max(max(run_out_tp$exact), max(run_out_tp$prob), max(run_out_tp$sol)), by = 0.05)[-1] # contour value breakpoints
 rng = 0 # range around the C:1 line as plot points
 lim = 1-(C+1)^(-pars$a)
-y_upr = max( c(run_out$prob, run_out$sol, run_out$prob, 1 - (1/(C+1)^(pars$a))))*1.01 
-cond = (C*run_out$future_val <= (run_out$past_val + rng)) & (C*run_out$future_val >= (run_out$past_val - rng)) ## range of values around C:1 line
-cond_short = (run_out$past_val <= 5)
-cond_mid = (run_out$past_val <= 100)
-run_out$lambda = factor(run_out$lambda, levels = c(1,5,10,100))
-run_out$future_val = factor(run_out$future_val, levels = c(20))
+y_upr = max( c(run_out_tp$prob, run_out_tp$sol, run_out_tp$prob, 1 - (1/(C+1)^(pars$a))))*1.01 
+cond = (C*run_out_tp$future_val <= (run_out_tp$past_val + rng)) & (C*run_out_tp$future_val >= (run_out_tp$past_val - rng)) ## range of values around C:1 line
+cond_short = (run_out_tp$past_val <= 5)
+cond_mid = (run_out_tp$past_val <= 100)
+run_out_tp$lambda = factor(run_out_tp$lambda, levels = c(1,5,10,100))
+run_out_tp$future_val = factor(run_out_tp$future_val, levels = c(20))
 
 fname_tag = "Std"
 
@@ -1547,7 +1549,7 @@ savePlots = TRUE ## option to save plots to ./plots in directory. Note that this
   brks = seq(0,by = round((y_upr+.05)/2, digits = 1), length = 3)
   labamba_curve1 <- ggplot() +
     scale_color_manual(values = rev(sequential_hcl(7, palette = "Heat")[1:(length(lambda_vec)+1)])) +
-    geom_line(data = run_out[run_out$scenario == "Scenario 1", ], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
+    geom_line(data = run_out_tp[run_out_tp$scenario == "Scenario 1", ], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0,20,by=5)) +
     scale_y_continuous(breaks = brks, limits = c(0, max(brks))) +     
     theme_classic() +
@@ -1558,34 +1560,34 @@ savePlots = TRUE ## option to save plots to ./plots in directory. Note that this
       legend.position = "none",
       plot.margin = unit(c(0.2,1,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24, color = "#FFFFFF"),
-      axis.text.x = element_text(size = 24),
-      axis.title.y = element_text(size = 24),
-      axis.text.y = element_text(size = 24),
+      axis.title.x = element_text(size = 28, color = "#FFFFFF"),
+      axis.text.x = element_text(size = 28),
+      axis.title.y = element_text(size = 28),
+      axis.text.y = element_text(size = 28),
       aspect.ratio = 1.0)
   
   labamba_curve2 <- ggplot() +
     scale_color_manual(values = rev(sequential_hcl(7, palette = "Heat")[1:(length(lambda_vec)+1)])) +
-    geom_line(data = run_out[run_out$scenario == "Scenario 2", ], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
+    geom_line(data = run_out_tp[run_out_tp$scenario == "Scenario 2", ], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0,20,by=5)) +
     scale_y_continuous(breaks = brks, limits = c(0, max(brks))) +     
     theme_classic() +
-    labs(x = expression( "Past spillover window "*(T[P])), 
+    labs(x = expression( "Past spillover window "*T[P]* " (years)"), 
          y = expression( atop( "Probability of a host", paste("jump  ", P(H[F]>0)) )), 
          color = expression(lambda)) + 
     theme(
       legend.position = "none",
       plot.margin = unit(c(0.2,1,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24),
-      axis.text.x = element_text(size = 24),
+      axis.title.x = element_text(size = 28),
+      axis.text.x = element_text(size = 28),
       axis.title.y = element_blank(),
       axis.text.y = element_blank(),
       aspect.ratio = 1.0)
   
   labamba_curve3 <- ggplot() +
     scale_color_manual(values = rev(sequential_hcl(7, palette = "Heat")[1:(length(lambda_vec)+1)])) +
-    geom_line(data = run_out[run_out$scenario == "Scenario 3", ], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
+    geom_line(data = run_out_tp[run_out_tp$scenario == "Scenario 3", ], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
     scale_x_continuous(breaks = seq(0,20,by=5)) +
     scale_y_continuous(breaks = brks, limits = c(0, max(brks))) +     
     theme_classic() +
@@ -1595,8 +1597,8 @@ savePlots = TRUE ## option to save plots to ./plots in directory. Note that this
     theme(
       plot.margin = unit(c(0.2,1,0,0), 'lines'),
       plot.title = element_blank(),
-      axis.title.x = element_text(size = 24, color = "#FFFFFF"),
-      axis.text.x = element_text(size = 24),
+      axis.title.x = element_text(size = 28, color = "#FFFFFF"),
+      axis.text.x = element_text(size = 28),
       axis.title.y = element_blank(),
       axis.text.y = element_blank(),
       legend.position = "none",
@@ -1620,8 +1622,8 @@ if(pars$runSims){ fname_tagL = paste0(fname_tag, '_Sims') }else{ fname_tagL = pa
 L_curves <- ggplot() +
   scale_color_manual(values = rev(sequential_hcl(7, palette = "Heat")[1:(length(lambda_vec)+1)])) +
   # scale_color_manual(values = viridis(5, option = "H")[1:(length(lambda_vec)+1)] ) +
-  geom_line(data = run_out, aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
-  #geom_point(data = run_out, aes(x = past_val, y = .data[['exact']], color = lambda), size = 2.5) +
+  geom_line(data = run_out_tp, aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
+  #geom_point(data = run_out_tp, aes(x = past_val, y = .data[['exact']], color = lambda), size = 2.5) +
   scale_x_continuous(breaks = seq(0,20,by=5)) +
   scale_y_continuous(breaks = seq(0,by = round((y_upr+.05)/2, digits = 1), length = 3)) +     
   facet_wrap(~scenario) + 
@@ -1647,14 +1649,14 @@ L_curves <- ggplot() +
 ## facet version of fig 2J-L on x scale T_P = 0:5
 curves <- ggplot() +
   scale_color_manual(values = rev(sequential_hcl(7, palette = "Heat")[1:(length(lambda_vec)+1)])) +
-  geom_line(data = run_out[cond_short,], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
+  geom_line(data = run_out_tp[cond_short,], aes(x = past_val, y = .data[['exact']], color = lambda), linewidth = 1.25) +
   scale_x_continuous(breaks = seq(0,5,by=1)) +
   scale_y_continuous(breaks = seq(0,by = round((y_upr+.05)/2, digits = 1), length = 3)) +     
   facet_wrap(~scenario) + 
   theme_classic() +
   annotate("segment", x=-Inf, xend=Inf, y=-Inf, yend=-Inf, linewidth = 1) +
   annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf, linewidth = 1) +
-  labs(x = expression( "Past spillover window "*(T[P])), 
+  labs(x = expression( "Past spillover window "*T[P]*" (years)"), 
        y = expression( atop( "Probability of a host", paste("jump  ", P(H[F]>0)) )), 
        color = expression(lambda)) + 
   theme(
@@ -1666,8 +1668,8 @@ curves <- ggplot() +
     axis.text.x = element_text(size = 20),
     axis.title.y = element_text(size = 20),
     axis.text.y = element_text(size = 20),
-    legend.title = element_text(size = 20),
-    legend.text = element_text(size = 18),
+    legend.title = element_text(size = 24),
+    legend.text = element_text(size = 24),
     aspect.ratio = 1.0)
 
 L_curves
@@ -1752,7 +1754,7 @@ figR1 <- ggplot() +
 
 figR1
 
-dat = run_out[run_out$past_val %in% c(2, 15),]
+dat = run_out_tp[run_out_tp$past_val %in% c(2, 15),]
 dat = dat[dat$lambda %in% c(1,10),c(1,5,6,7)]
 dat$exact = format(dat$exact, digits = 2) 
 write.csv(dat, '~/Desktop/R1_tableRAW.csv')
